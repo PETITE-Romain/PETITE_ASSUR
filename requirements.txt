@@ -2,3 +2,8 @@ Flask
 Flask-SQLAlchemy
 python-dotenv
 gunicorn==21.2.0
+flask_login
+wtforms
+Flask-WTF
+Flask-Migrate
+datetime
