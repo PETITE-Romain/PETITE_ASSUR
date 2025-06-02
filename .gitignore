@@ -4,6 +4,7 @@ __pycache__/
 *.pyd
 *.db
 *.sqlite3
+*.sql
 .env
 venv/
 instance/

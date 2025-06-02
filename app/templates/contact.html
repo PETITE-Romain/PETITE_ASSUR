@@ -1,0 +1,66 @@
+{% extends "base.html" %}
+
+{% block title %}Contact - PETITE ASSUR{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <h1 class="text-center text-primary mb-4">Nous contacter</h1>
+
+    <div class="row justify-content-center">
+        <div class="col-md-7">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
+                        {{ message }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    </div>
+                {% endfor %}
+                {% endif %}
+            {% endwith %}
+            <form method="post">
+                <div class="mb-3">
+                    <label for="nom" class="form-label">Nom</label>
+                    <input type="text" class="form-control" id="nom" name="nom" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="prenom" class="form-label">Prénom</label>
+                    <input type="text" class="form-control" id="prenom" name="prenom" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="email" class="form-label">Adresse email</label>
+                    <input type="email" class="form-control" id="email" name="email" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="sujet" class="form-label">Sujet</label>
+                    <input type="text" class="form-control" id="sujet" name="sujet" required>
+                </div>
+
+                <div class="mb-3">
+                    <label for="message" class="form-label">Message</label>
+                    <textarea class="form-control" id="message" name="message" rows="5" required></textarea>
+                </div>
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-primary">Envoyer</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-md-4 mt-5 mt-md-0">
+            <div class="card shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Informations de contact</h5>
+                    <p><strong>Adresse :</strong><br>123 Rue des Ailes, 75000 Paris</p>
+                    <p><strong>Téléphone :</strong><br>+33 1 23 45 67 89</p>
+                    <p><strong>Email :</strong><br><a href="mailto:contact@petiteassur.fr">contact@petiteassur.fr</a></p>
+                    <p><strong>Horaires :</strong><br>Lundi - Vendredi : 9h - 18h</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des utilisateurs</title>
+    <style>
+        body {
+            font-family: sans-serif;
+        }
+        
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        
+        li {
+            background: #f0f0f0;
+            margin: 5px 0;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Liste des utilisateurs</h1>
+    <ul>
+        {% for utilisateur in utilisateurs %}
+        <li>{{ utilisateur.username }}</li>
+        {% else %}
+        <li>Aucun utilisateur trouvé.</li>
+        {% endfor %}
+    </ul>
+</body>
+
+</html>
