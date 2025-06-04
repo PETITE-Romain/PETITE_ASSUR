@@ -4,12 +4,18 @@ from flask_login import LoginManager
 import logging
 from logging.handlers import RotatingFileHandler
 import os
+from sqlalchemy.pool import NullPool
 
 db = SQLAlchemy()
 
 def create_app():
     app = Flask(__name__)
     app.config.from_object('config.Config')
+    app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {
+    "pool_pre_ping": True,         # Vérifie si la connexion est toujours active
+    "pool_recycle": 280,           # Recycle la connexion toutes les 280 secondes (~4 min 40)
+    "poolclass": NullPool          # (Optionnel) désactive le pooling pour tests simples
+    }
 
     if not os.path.exists('logs'):
         os.mkdir('logs')
