@@ -17,7 +17,7 @@ def inscription():
     if form.validate_on_submit():
         prenom = form.first_name.data
         nom = form.last_name.data
-        email = form.email.data
+        e_mail = form.email.data
         password = form.password.data
         date_naissance = form.date_naissance.data
 
@@ -26,7 +26,7 @@ def inscription():
         nouveau_client = Client(
             prenom=prenom,
             nom=nom,
-            email=email,
+            e_mail=e_mail,
             mot_de_passe=hashed_password,
             date_naissance=date_naissance
         )
