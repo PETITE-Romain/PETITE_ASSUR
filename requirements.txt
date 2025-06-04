@@ -1,4 +1,9 @@
 Flask
 Flask-SQLAlchemy
+Flask-Login
+Flask-WTF
 python-dotenv
 gunicorn==21.2.0
+pymysql
+Werkzeug
+WTForms
