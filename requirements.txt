@@ -7,3 +7,6 @@ gunicorn==21.2.0
 pymysql
 Werkzeug
 WTForms
+email_validator
+datetime
+SQLAlchemy
