@@ -17,7 +17,7 @@ def inscription():
     if form.validate_on_submit():
         prenom = form.first_name.data
         nom = form.last_name.data
-        e_mail = form.email.data
+        email = form.email.data
         password = form.password.data
         date_naissance = form.date_naissance.data
 
@@ -26,7 +26,7 @@ def inscription():
         nouveau_client = Client(
             prenom=prenom,
             nom=nom,
-            e_mail=e_mail,
+            email=email,
             mot_de_passe=hashed_password,
             date_naissance=date_naissance
         )
@@ -47,11 +47,11 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        e_mail = form.email.data
+        email = form.email.data
         password = form.password.data
 
         # Recherche de l'utilisateur par email
-        client = Client.query.filter_by(e_mail=e_mail).first()
+        client = Client.query.filter_by(email=email).first()
 
         if client and check_password_hash(client.mot_de_passe, password):
             login_user(client)
