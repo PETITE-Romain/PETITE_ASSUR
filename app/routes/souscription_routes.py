@@ -7,6 +7,7 @@ from app.models import ContratAssurance, TypeContratAssurance, souscrit
 
 souscription_bp = Blueprint('souscription', __name__)
 
+# Exemple de fonction tarifaire simple
 def calcul_prix(date_naissance, pays, duree_jours):
     age = (datetime.today().date() - date_naissance).days // 365
     base = 10.0 
@@ -32,6 +33,7 @@ def souscrire():
         pays = request.form.get('pays')
         duree = int(request.form.get('duree', 0))
 
+        # Vérification de la date
         if not date_naissance_str:
             flash("La date de naissance est requise.", "danger")
             return redirect(url_for('souscription.souscrire'))
@@ -54,11 +56,12 @@ def souscrire():
             return render_template('souscription.html', devis=devis, types_contrats=types_contrats, user=current_user)
 
         elif action == 'souscrire':
+            # 🔥 Enregistre directement le client_id dans ContratAssurance
             contrat = ContratAssurance(
                 tarif_final=prix,
                 date_souscription=datetime.utcnow(),
                 type_contrat_assurance_id=type_id,
-                client_id=current_user.id 
+                client_id=current_user.id  # 🔗 lien direct vers le client
             )
             db.session.add(contrat)
             db.session.commit()
@@ -66,5 +69,5 @@ def souscrire():
             flash("Souscription enregistrée avec succès !", "success")
             return redirect(url_for('user.profil'))
 
-    return render_template('profil.html', types_contrats=types_contrats, devis=devis, user=current_user)
+    return render_template('souscription.html', types_contrats=types_contrats, devis=devis, user=current_user)
 
