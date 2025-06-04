@@ -69,5 +69,5 @@ def souscrire():
             flash("Souscription enregistrée avec succès !", "success")
             return redirect(url_for('user.profil'))
 
-    return render_template('souscription.html', types_contrats=types_contrats, devis=devis, user=current_user)
+    return render_template('profil.html', types_contrats=types_contrats, devis=devis, user=current_user)
 
