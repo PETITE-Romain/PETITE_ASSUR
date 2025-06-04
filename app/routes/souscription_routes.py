@@ -61,7 +61,7 @@ def souscrire():
                 tarif_final=prix,
                 date_souscription=datetime.utcnow(),
                 type_contrat_assurance_id=type_id,
-                client_id=current_user.id  # 🔗 lien direct vers le client
+                client_id=current_user.id
             )
             db.session.add(contrat)
             db.session.commit()
