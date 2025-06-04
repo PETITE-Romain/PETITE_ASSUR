@@ -47,11 +47,11 @@ def login():
     form = LoginForm()
 
     if form.validate_on_submit():
-        email = form.email.data
+        e_mail = form.email.data
         password = form.password.data
 
         # Recherche de l'utilisateur par email
-        client = Client.query.filter_by(email=email).first()
+        client = Client.query.filter_by(e_mail=e_mail).first()
 
         if client and check_password_hash(client.mot_de_passe, password):
             login_user(client)
