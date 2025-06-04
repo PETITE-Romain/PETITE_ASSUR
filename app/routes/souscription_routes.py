@@ -46,6 +46,8 @@ def souscrire():
 
         prix = calcul_prix(date_naissance, pays, duree)
 
+        print("Action reçue :", action)
+
         if action == 'devis':
             devis = {
                 "type_id": type_id,
@@ -65,6 +67,7 @@ def souscrire():
             )
             db.session.add(contrat)
             db.session.commit()
+            print("Ajout du contrat pour client", current_user.id)
 
             flash("Souscription enregistrée avec succès !", "success")
             return redirect(url_for('user.profil'))
