@@ -1,5 +1,5 @@
-from flask import Blueprint, render_template, request, flash, redirect, url_for
-from ..models import Utilisateur
+from flask import Blueprint, render_template, request, flash, redirect, url_for, current_app
+from ..models import Client
 from app.models import Contact
 from sqlalchemy import insert
 
@@ -11,7 +11,7 @@ def index():
 
 @main.route('/utilisateurs')
 def liste_utilisateurs():
-    utilisateurs = Utilisateur.query.all()
+    utilisateurs = Client.query.all()
     return render_template('utilisateurs.html', utilisateurs=utilisateurs)
 
 @main.route('/contact', methods=['GET', 'POST'])
@@ -19,18 +19,18 @@ def contact():
     if request.method == 'POST':
         nom = request.form['nom']
         prenom = request.form['prenom']
-        email = request.form['email']
+        e_mail = request.form['email']
         sujet = request.form['sujet']
         message = request.form['message']
 
-        print(nom, prenom, email, sujet, message)
+        print(nom, prenom, e_mail, sujet, message)
 
         from app import db
 
         nouveau_contact = Contact(
             nom=nom,
             prenom=prenom,
-            email=email,
+            e_mail=e_mail,
             sujet=sujet,
             message=message
         )
@@ -39,9 +39,12 @@ def contact():
             db.session.add(nouveau_contact)
             db.session.commit()
             flash("Votre message a été envoyé avec succès !", "success")
+            current_app.logger.info(f"Nouveau message de contact : {e_mail}, sujet : {sujet}")
         except Exception as e:
             db.session.rollback()
             flash(f"Erreur : {str(e)}", "danger")
+            current_app.logger.error(f"Erreur contact : {str(e)}")
+            flash("Une erreur est survenue. Veuillez réessayer.", "danger")
         
         return redirect(url_for('main.contact'))
     

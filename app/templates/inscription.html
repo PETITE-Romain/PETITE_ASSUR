@@ -9,7 +9,7 @@
                 <div class="card shadow-sm">
                     <div class="card-body">
                         <h1 class="text-center text-primary mb-4">Créer un compte</h1>
-                        <form method="POST" action="{{ url_for('auth.register') }}">
+                        <form method="POST" action="{{ url_for('auth.inscription') }}">
                             {{ form.hidden_tag() }}
 
                             <div class="mb-3">
@@ -31,6 +31,10 @@
                             <div class="mb-3">
                                 {{ form.confirm_password.label(class="form-label") }}
                                 {{ form.confirm_password(class="form-control", placeholder="Confirmez votre mot de passe") }}
+                            </div>
+                            <div class="mb-3">
+                                {{ form.date_naissance.label(class="form-label") }}
+                                {{ form.date_naissance(class="form-control", type="date", required=True) }}
                             </div>
                             <div class="d-grid">
                                 <button type="submit" class="btn btn-info">S'inscrire</button>

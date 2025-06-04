@@ -1,0 +1,88 @@
+{% extends "base.html" %} {% block content %}
+<main class="flex-grow-1 py-5">
+    <div class="container">
+        <h1 class="text-center text-primary mb-4">Mes sinistres</h1>
+
+        <div class="table-responsive">
+            <table class="table table-bordered align-middle">
+                <thead class="table-light">
+                    <tr>
+                        <th scope="col">N° Dossier</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Statut</th>
+                        <th scope="col">Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for sinistre in sinistres %}
+                    <tr>
+                        <td>#{{ sinistre.id }}</td>
+                        <td>{{ sinistre.type_sinistre }}</td>
+                        <td>
+                            <span class="badge 
+                                {% if sinistre.status == 'En attente' %}
+                                    bg-warning text-dark
+                                {% elif sinistre.status == 'Traité' %}
+                                    bg-success
+                                {% elif sinistre.status == 'Refusé' %}
+                                    bg-danger
+                                {% else %}
+                                    bg-secondary
+                                {% endif %}
+                            ">
+                                {{ sinistre.status }}
+                            </span>
+                        </td>
+                        <td>
+                            {% if sinistre.status == 'En attente' %}
+                            <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#justificatifModal" data-id="{{ sinistre.id }}">
+                                    Ajouter un justificatif
+                                </button> {% else %} - {% endif %}
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5" class="text-center">Aucun sinistre enregistré.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</main>
+
+<div class="modal fade" id="justificatifModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <form class="modal-content" method="POST" action="{{ url_for('user.ajouter_justificatif') }}" enctype="multipart/form-data">
+            <input type="hidden" name="sinistre_id" id="modalSinistreId">
+            <div class="modal-header">
+                <h5 class="modal-title">Ajouter un justificatif</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body">
+                <div class="mb-3">
+                    <label for="fileUpload" class="form-label">Fichier justificatif</label>
+                    <input type="file" class="form-control" name="justificatif" id="fileUpload" accept=".pdf,.jpg,.jpeg,.png" required />
+                </div>
+                <div class="mb-3">
+                    <label for="commentaire" class="form-label">Commentaire (facultatif)</label>
+                    <textarea class="form-control" name="commentaire" id="commentaire" rows="3"></textarea>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="submit" class="btn btn-primary">Envoyer</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    const justificatifModal = document.getElementById('justificatifModal');
+    justificatifModal.addEventListener('show.bs.modal', function(event) {
+        const button = event.relatedTarget;
+        const sinistreId = button.getAttribute('data-id');
+        document.getElementById('modalSinistreId').value = sinistreId;
+    });
+</script>
+{% endblock %}

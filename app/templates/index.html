@@ -1,11 +1,7 @@
-{% extends "base.html" %}
-
-{% block title %}Accueil - PETITE ASSUR{% endblock %}
-
-{% block content %}
+{% extends "base.html" %} {% block title %}Accueil - PETITE ASSUR{% endblock %} {% block content %}
 <div class="text-center">
-  <h1 class="display-4 text-primary">Votre sécurité en vol, notre mission</h1>
-  <p class="lead text-muted">Assurance spécialisée pour l’aéronautique civile et professionnelle.</p>
-  <a href="#" class="btn btn-info">Demander un devis</a>
+    <h1 class="display-4 text-primary">Votre sécurité en vol, notre mission</h1>
+    <p class="lead text-muted">Assurance spécialisée pour l’aéronautique civile et professionnelle.</p>
+    <a href="{{ url_for('souscription.souscrire') }}" class="btn btn-info">Demander un devis</a>
 </div>
 {% endblock %}

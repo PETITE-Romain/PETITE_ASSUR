@@ -1,0 +1,66 @@
+{% extends "base.html" %} {% block content %}
+<main class="flex-grow-1 py-5">
+    <div class="container">
+        <h1 class="text-center text-primary mb-4">Mon Compte</h1>
+        <div class="row">
+            <!-- Informations personnelles -->
+            <div class="col-md-4 mb-4">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Informations personnelles</h5>
+                        <ul class="list-group list-group-flush mt-3">
+                            <li class="list-group-item"><strong>Nom :</strong> {{ utilisateur.nom }}</li>
+                            <li class="list-group-item"><strong>Prénom :</strong> {{ utilisateur.prenom }}</li>
+                            <li class="list-group-item"><strong>Email :</strong> {{ utilisateur.e_mail }}</li>
+                            <li class="list-group-item"><strong>Date Naissance :</strong> {{ utilisateur.date_naissance.strftime('%d/%m/%Y') }}</li>
+                        </ul>
+                        <div class="text-center mt-4">
+                            <a href="#" class="btn btn-outline-primary btn-sm">Modifier mes informations</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Liste des contrats -->
+            <div class="col-md-8">
+                <div class="card shadow-sm">
+                    <div class="card-body">
+                        <h5 class="card-title text-center">Mes contrats souscrits</h5>
+                        <div class="table-responsive mt-3">
+                            <table class="table table-bordered">
+                                <thead class="table-light">
+                                    <tr>
+                                        <th>Numéro</th>
+                                        <th>Formule</th>
+                                        <th>Tarif</th>
+                                        <th>Date de souscription</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for contrat in contrats %}
+                                    <tr>
+                                        <td>{{ contrat.id }}</td>
+                                        <td>{{ contrat.type_contrat.libelle }}</td>
+                                        <td>{{ contrat.tarif_final }} €</td>
+                                        <td>
+                                            {% if contrat.date_souscription %} {{ contrat.date_souscription.strftime('%d/%m/%Y') }} {% else %} N/A {% endif %}
+                                        </td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="4" class="text-center">Aucun contrat souscrit.</td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="text-center mt-3">
+                            <a href="{{ url_for('souscription.souscrire') }}" class="btn btn-info">Souscrire un nouveau contrat</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}

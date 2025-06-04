@@ -1,6 +1,8 @@
-from flask import Blueprint, render_template, redirect, url_for, flash
+from flask import Blueprint, render_template, redirect, url_for, flash, request
+from datetime import datetime
+from werkzeug.security import generate_password_hash, check_password_hash
 from app.forms import RegisterForm
-from app.models import Utilisateur as User
+from app.models import Client
 from app.forms import LoginForm
 from app import db
 from flask_login import login_user
@@ -9,43 +11,55 @@ from flask_login import logout_user
 auth = Blueprint('auth', __name__)
 
 @auth.route('/inscription', methods=['GET', 'POST'])
-def register():
+def inscription():
     form = RegisterForm()
 
     if form.validate_on_submit():
-        existing_user = User.query.filter_by(email=form.email.data).first()
-        if existing_user:
-            flash("Cet email est déjà utilisé.", "danger")
-            return redirect(url_for('auth.register'))
+        prenom = form.first_name.data
+        nom = form.last_name.data
+        e_mail = form.email.data
+        password = form.password.data
+        date_naissance = form.date_naissance.data
 
-        new_user = User(
-            first_name=form.first_name.data,
-            last_name=form.last_name.data,
-            email=form.email.data,
-            password=form.password.data
+        hashed_password = generate_password_hash(password)
+
+        nouveau_client = Client(
+            prenom=prenom,
+            nom=nom,
+            e_mail=e_mail,
+            mot_de_passe=hashed_password,
+            date_naissance=date_naissance
         )
 
-        db.session.add(new_user)
-        db.session.commit()
-
-        flash("Inscription réussie ! Vous pouvez maintenant vous connecter.", "success")
-        return redirect(url_for('auth.login'))
+        try:
+            db.session.add(nouveau_client)
+            db.session.commit()
+            flash("Inscription réussie !", "success")
+            return redirect(url_for('auth.login'))
+        except Exception as e:
+            db.session.rollback()
+            flash(f"Erreur : {str(e)}", "danger")
 
     return render_template('inscription.html', form=form)
 
 @auth.route('/connexion', methods=['GET', 'POST'])
 def login():
     form = LoginForm()
+
     if form.validate_on_submit():
-        email = form.email.data
+        e_mail = form.email.data
         password = form.password.data
 
-        if email == "admin@example.com" and password == "password":
+        # Recherche de l'utilisateur par email
+        client = Client.query.filter_by(e_mail=e_mail).first()
+
+        if client and check_password_hash(client.mot_de_passe, password):
+            login_user(client)
             flash("Connexion réussie", "success")
-            login_user(User)
-            return redirect(url_for('main.home'))  # à adapter
+            return redirect(url_for('main.index'))  # à adapter selon ton app
         else:
             flash("Email ou mot de passe invalide", "danger")
+
     return render_template('connexion.html', form=form)
 
 @auth.route('/logout')
