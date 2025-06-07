@@ -24,7 +24,7 @@ PETITE_ASSUR est un projet conçu pour gérer efficacement les opérations liée
     ```
 
 ## Utilisation
-1. Démarrez l'application :
+1. Démarrez l'application en local :
     ```bash
     python3 run.py
     ```
